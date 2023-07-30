@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/count-stepping-numbers-in-range">Count Stepping Numbers in Range</a></h2> <img src='https://img.shields.io/badge/Difficulty-Hard-red' alt='Difficulty: Hard' /><hr><p>Given two positive integers <code>low</code> and <code>high</code> represented as strings, find the count of <strong>stepping numbers</strong> in the inclusive range <code>[low, high]</code>.</p>
+<h2><a href="https://leetcode.com/problems/count-stepping-numbers-in-range">2921. Count Stepping Numbers in Range</a></h2><h3>Hard</h3><hr><p>Given two positive integers <code>low</code> and <code>high</code> represented as strings, find the count of <strong>stepping numbers</strong> in the inclusive range <code>[low, high]</code>.</p>
 
 <p>A <strong>stepping number</strong> is an integer such that all of its adjacent digits have an absolute difference of <strong>exactly</strong> <code>1</code>.</p>
 
