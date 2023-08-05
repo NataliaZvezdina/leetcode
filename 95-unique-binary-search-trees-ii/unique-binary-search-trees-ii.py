@@ -7,27 +7,14 @@
 class Solution:
     def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
 
-        def find(start, end, memo):
-            res = []
-            if start > end:
-                res.append(None)
-                return res
-
-            if (start, end) in memo:
-                return memo[(start, end)]
-
-            for i in range(start, end+1):
-                leftTrees = find(start, i-1, memo)
-                rightTrees = find(i+1, end, memo)
-
-                for left in leftTrees:
-                    for right in rightTrees:
-                        root = TreeNode(i, left, right)
-                        res.append(root)
-
-            memo[(start, end)] = res
-            return res
-
-        memo = {}
-        return find(1, n, memo)
+        @cache
+        def find(start, end):
+            return [None] if start > end else [
+                TreeNode(i, left, right)
+                for i in range(start, end+1)
+                for left in find(start, i-1)
+                for right in find(i+1, end)
+            ]
+            
+        return find(1, n)
         
