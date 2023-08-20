@@ -5,7 +5,7 @@ class UnionFind:
 
     def find(self, v):
         while v != self.parent[v]:
-            self.parent[self.parent[v]]
+            self.parent[v] = self.parent[self.parent[v]]
             v = self.parent[v]
         return v
 
