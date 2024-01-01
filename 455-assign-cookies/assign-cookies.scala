@@ -1,24 +1,17 @@
-import scala.util.control.Breaks._
+import scala.annotation.tailrec
 
 object Solution {
     def findContentChildren(g: Array[Int], s: Array[Int]): Int = {
         val gSorted = g.sorted
         val sSorted = s.sorted
-        var i, j = 0
         
-        breakable {
-            while (i < gSorted.length) {
-                while (j < sSorted.length && gSorted(i) > sSorted(j)) {
-                    j += 1
-                }
-                if (j < sSorted.length) {
-                    i += 1
-                    j += 1
-                } else {
-                    break
-                }
-            }
+        @tailrec
+        def run(gIdx: Int = 0, sIdx: Int = 0, acc: Int = 0): Int = {
+            if (gIdx >= gSorted.size || sIdx >= sSorted.size) acc
+            else if (gSorted(gIdx) <= sSorted(sIdx)) run(gIdx+1, sIdx+1, acc+1)
+            else run(gIdx, sIdx+1, acc)
         }
-        i
+
+        run()
     }
 }
