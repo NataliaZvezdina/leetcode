@@ -8,11 +8,16 @@
  */
 object Solution {
     def rangeSumBST(root: TreeNode, low: Int, high: Int): Int = {
+        
+        def loop(tr: List[TreeNode], acc: Int = 0): Int = {
+            tr.headOption match {
+                case None => acc
+                case Some(head) if head.value < low => loop(Option(head.right).toList ::: tr.tail,  acc)
+                case Some(head) if head.value > high => loop(Option(head.left).toList ::: tr.tail,  acc)
+                case Some(head) => loop(List(head.left, head.right).flatMap(Option(_)) ::: tr.tail, acc + head.value)
+            }
+        }
 
-        if (root == null) 0
-        else if (root.value > high) rangeSumBST(root.left, low, high)
-        else if (root.value < low) rangeSumBST(root.right, low, high)
-        else root.value + rangeSumBST(root.left, low, high) + rangeSumBST(root.right, low, high)
-  
+        loop(Option(root).toList)
     }
 }
