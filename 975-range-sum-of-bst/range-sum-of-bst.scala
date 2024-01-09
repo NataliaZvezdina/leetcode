@@ -6,18 +6,23 @@
  *   var right: TreeNode = _right
  * }
  */
+
+import scala.util.control.TailCalls._
+
 object Solution {
     def rangeSumBST(root: TreeNode, low: Int, high: Int): Int = {
-        
-        def loop(tr: List[TreeNode], acc: Int = 0): Int = {
-            tr.headOption match {
-                case None => acc
-                case Some(head) if head.value < low => loop(Option(head.right).toList ::: tr.tail,  acc)
-                case Some(head) if head.value > high => loop(Option(head.left).toList ::: tr.tail,  acc)
-                case Some(head) => loop(List(head.left, head.right).flatMap(Option(_)) ::: tr.tail, acc + head.value)
-            }
+
+        def dfs(root: TreeNode, acc: Int = 0): TailRec[Int] = Option(root) match {
+            case None => done(0)
+            case Some(root) if root.value < low => dfs(root.right, acc)
+            case Some(root) if root.value > high => dfs(root.left, acc)
+            case _ => for (
+                l <- dfs(root.left, acc);
+                r <- dfs(root.right, acc)
+            ) yield l + r + root.value
         }
 
-        loop(Option(root).toList)
+        dfs(root).result
+
     }
 }
