@@ -6,15 +6,21 @@
  *   var right: TreeNode = _right
  * }
  */
+import scala.util.control.TailCalls._
+
 object Solution {
     def leafSimilar(root1: TreeNode, root2: TreeNode): Boolean = {
-        
-        def dfs(root: TreeNode): List[Int] = Option(root) match {
-            case None => List[Int]()
-            case Some(root) if root.left == null && root.right == null => List(root.value)
-            case _ => dfs(root.left) ::: dfs(root.right)
+
+        def dfs(root: TreeNode, leafs: List[Int]): TailRec[List[Int]] = Option(root) match {
+            case None => done(List[Int]())
+            case Some(root) if root.left == null && root.right == null => done(List(root.value))
+            case _ => for {
+                l <- dfs(root.left, leafs)
+                r <- dfs(root.right, leafs)
+            } yield l ::: r
         }
 
-        dfs(root1) == dfs(root2)
+        dfs(root1, List[Int]()).result == dfs(root2, List[Int]()).result
     }
+
 }
