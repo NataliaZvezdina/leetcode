@@ -6,20 +6,20 @@
  *   var right: TreeNode = _right
  * }
  */
+
+import scala.util.control.TailCalls._
 object Solution {
     def inorderTraversal(root: TreeNode): List[Int] = {
-        val res = scala.collection.mutable.ListBuffer[Int]()
+        
+        def dfs(node: TreeNode, lst: List[Int]): TailRec[List[Int]] = Option(node) match {
+            case None => done(List.empty)
+            case Some(node) =>
+                for {
+                    l <- dfs(node.left, lst)
+                    r <- dfs(node.right, lst)
+                } yield l ::: List(node.value) ::: r
+        }        
 
-        def dfs(node: TreeNode): Unit = Option(node) match {
-            case None =>
-            case Some(node) => {
-                dfs(node.left)
-                res.addOne(node.value)
-                dfs(node.right)
-            }
-        }
-
-        dfs(root)
-        res.toList
+        dfs(root, List.empty[Int]).result
     }
 }
